@@ -1,0 +1,30 @@
+generator client{
+    provider="prisma-client-js"
+}
+
+datasource db{
+    provider="postgresql"
+    url=env("DATABASE_URL")
+}
+
+model Employee{
+    id  Int  @id@default(autoincrement())
+    name String 
+    email String  @unique
+    password_hash String
+    department String
+    total_leaves Int  @default(0)
+    requests LeaveRequest[]
+}
+
+model LeaveRequest{
+    id  Int  @id@default(autoincrement())
+    employeeId Int
+    category String
+    startDate DateTime
+    endDate  DateTime
+    reason String
+    status String  @default("Pending")
+
+    employee Employee @relation(fields:[employeeId],references:[id])
+}

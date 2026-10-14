@@ -4,10 +4,18 @@ export default function ApplyLeave() {
     const [name, setName] = useState("")
     const [startDate, setStartDate] = useState("")
     const [endDate, setEndDate] = useState("")
+    const[reason,setReason]=useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const newData = { department, name, startDate, endDate }
+        const formattedStart=startDate.split('-').reverse().join('-')
+        const formattedEnd=endDate.split('-').reverse().join('-')
+        // if(new Date(endDate)>new Date(startDate)){
+        //     alert("End Date cannot be Befor Start date,bhai")
+        //     return
+        // }
+
+        const newData = {employeeId:1, category:department, name, startDate, endDate,reason}
         try {
             const respone = await fetch('http://localhost:3000/api/leave', {
                 method: "POST",
@@ -25,6 +33,7 @@ export default function ApplyLeave() {
         setName("")
         setStartDate("")
         setEndDate("")
+        setReason("")
     }
 
 
@@ -40,8 +49,19 @@ export default function ApplyLeave() {
             </select>
             
             <input className="p-3 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type='text' placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-            <input className="p-3 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type='date' value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-            <input className="p-3 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type='date' value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+            <div className="flex flex-col gap-1">
+                <label className="text-sm text-black font-semibold ml-1">Start Date</label>
+                <input className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"  type="date" value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
+            </div>
+            <div className="flex flex-col gap-1">
+                <label className="text-sm text-black font-semibold ml-1">End Date</label>
+                <input className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"  type="date" value={endDate} onChange={(e)=>setEndDate(e.target.value)}/>
+            </div>
+            <div className="flex flex-col gap-1">
+                <label className="text-sm text-black font-semibold ml-1">Reason for Leave</label>
+                <textarea className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full resize-none" rows="3" placeholder="Briefly explain your reason..." type='text' value={reason} onChange={(e)=>setReason(e.target.value)}></textarea>
+            </div>
+            
             <button className="bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition-all mt-2" onClick={handleSubmit}>Submit Request</button>
             
         </div>

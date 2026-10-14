@@ -7,7 +7,7 @@ export default function ManageStaff() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const newData = { department, staffName, totalLeave }
+            const newData = { department:department,name: staffName, total_leaves:parseInt(totalLeave),email:"rachit@latest.com",password_hash:"123456"}
             const response = await fetch('http://localhost:3000/api/staff', {
                 method: "POST",
                 headers: {
